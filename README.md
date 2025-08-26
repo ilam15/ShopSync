@@ -1,5 +1,5 @@
 # ShopSync
-The Stock Management System is a Java-based application that helps malls manage shops, products, and inventory efficiently. It allows admins and shop managers to track stock levels, update products, handle billing, and generate reports with database support (MySQL/MongoDB).
+The ShopSync is a Java-based application that helps malls manage shops, products, and inventory efficiently. It allows admins and shop managers to track stock levels, update products, handle billing, and generate reports with database support (MySQL/MongoDB).
 
 Features:
 

@@ -13,7 +13,7 @@ public class Main {
         List<Customer> customers = new ArrayList<>();
         int choice;
         do {
-            System.out.println("\n===== Mall Management Menu =====");
+            System.out.println("\n===== ShopSync =====");
             System.out.println("1. Add Shop");
             System.out.println("2. Add Product to Shop");
             System.out.println("3. Add Customer");
