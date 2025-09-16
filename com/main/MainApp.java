@@ -4,6 +4,11 @@ import com.mall.Mall;
 import com.shop.Shop;
 import com.product.Product;
 import com.customer.Customer;
+import com.cart.Cart;
+import com.transaction.Transaction;
+import com.payment.Payment;
+import java.util.Date;
+import java.util.Map;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,12 +41,17 @@ public class MainApp extends Application {
         customerTab.setClosable(false);
         customerTab.setContent(createCustomerManagementPane());
 
+        // Billing Tab
+        Tab billingTab = new Tab("Billing");
+        billingTab.setClosable(false);
+        billingTab.setContent(createBillingPane());
+
         // Mall Details Tab
         Tab mallTab = new Tab("Mall Details");
         mallTab.setClosable(false);
         mallTab.setContent(createMallDetailsPane());
 
-        tabPane.getTabs().addAll(shopTab, productTab, customerTab, mallTab);
+        tabPane.getTabs().addAll(shopTab, productTab, customerTab, billingTab, mallTab);
 
         Scene scene = new Scene(tabPane, 800, 600);
         primaryStage.setTitle("ShopSync - Mall Management System");
@@ -261,6 +271,246 @@ public class MainApp extends Application {
         for (Customer c : customers) {
             items.add("ID: " + c.getCustomerId() + ", Name: " + c.getCustomerName() + " (" + c.getEmail() + ")");
         }
+    }
+
+    private Pane createBillingPane() {
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(10));
+
+        // Customer Selector
+        HBox customerSelector = new HBox(10);
+        ComboBox<String> customerCombo = new ComboBox<>();
+        updateCustomerCombo(customerCombo);
+        customerSelector.getChildren().addAll(new Label("Select Customer:"), customerCombo);
+
+        // Shop Selector
+        HBox shopSelector = new HBox(10);
+        ComboBox<String> shopCombo = new ComboBox<>();
+        updateShopCombo(shopCombo);
+        shopSelector.getChildren().addAll(new Label("Select Shop:"), shopCombo);
+
+        // Product Search and Add
+        HBox productSearch = new HBox(10);
+        TextField productSearchField = new TextField();
+        productSearchField.setPromptText("Search Product by Name");
+        Button searchBtn = new Button("Search");
+        productSearch.getChildren().addAll(productSearchField, searchBtn);
+
+        // Product List for selection
+        ListView<String> productListView = new ListView<>();
+        ObservableList<String> productItems = FXCollections.observableArrayList();
+        productListView.setItems(productItems);
+
+        // Add to Cart
+        HBox addToCart = new HBox(10);
+        TextField qtyField = new TextField();
+        qtyField.setPromptText("Quantity");
+        Button addToCartBtn = new Button("Add to Cart");
+        addToCart.getChildren().addAll(qtyField, addToCartBtn);
+
+        // Cart Display
+        ListView<String> cartListView = new ListView<>();
+        ObservableList<String> cartItems = FXCollections.observableArrayList();
+        cartListView.setItems(cartItems);
+        Button removeFromCartBtn = new Button("Remove from Cart");
+
+        // Totals
+        HBox totals = new HBox(10);
+        Label subtotalLabel = new Label("Subtotal: 0.00");
+        Label taxLabel = new Label("Tax (10%): 0.00");
+        Label totalLabel = new Label("Total: 0.00");
+        totals.getChildren().addAll(subtotalLabel, taxLabel, totalLabel);
+
+        // Loyalty Points
+        HBox loyalty = new HBox(10);
+        TextField pointsField = new TextField();
+        pointsField.setPromptText("Redeem Points");
+        Button redeemBtn = new Button("Redeem");
+        loyalty.getChildren().addAll(pointsField, redeemBtn);
+
+        // Payment
+        HBox payment = new HBox(10);
+        ComboBox<String> paymentTypeCombo = new ComboBox<>();
+        paymentTypeCombo.getItems().addAll("Cash", "Card");
+        paymentTypeCombo.setValue("Cash");
+        Button processPaymentBtn = new Button("Process Payment");
+        payment.getChildren().addAll(new Label("Payment Type:"), paymentTypeCombo, processPaymentBtn);
+
+        // Invoice
+        TextArea invoiceArea = new TextArea();
+        invoiceArea.setEditable(false);
+        invoiceArea.setPrefHeight(200);
+
+        // Cart instance
+        Cart cart = new Cart();
+
+        // Event handlers
+        shopCombo.setOnAction(e -> {
+            String selected = shopCombo.getValue();
+            if (selected != null) {
+                int shopId = Integer.parseInt(selected.split(": ")[1]);
+                Shop shop = mall.getShop(shopId);
+                updateProductList(productItems, shop);
+            }
+        });
+
+        searchBtn.setOnAction(e -> {
+            String selectedShop = shopCombo.getValue();
+            if (selectedShop == null) {
+                showAlert("Select a shop first");
+                return;
+            }
+            int shopId = Integer.parseInt(selectedShop.split(": ")[1]);
+            Shop shop = mall.getShop(shopId);
+            String searchTerm = productSearchField.getText().toLowerCase();
+            productItems.clear();
+            for (Product p : shop.listAllProducts()) {
+                if (p.getProductName().toLowerCase().contains(searchTerm)) {
+                    productItems.add("ID: " + p.getProductId() + ", Name: " + p.getProductName() + ", Price: " + p.getPrice() + ", Qty: " + p.getQuantity());
+                }
+            }
+        });
+
+        addToCartBtn.setOnAction(e -> {
+            String selectedProduct = productListView.getSelectionModel().getSelectedItem();
+            if (selectedProduct == null) {
+                showAlert("Select a product first");
+                return;
+            }
+            try {
+                int prodId = Integer.parseInt(selectedProduct.split(",")[0].split(": ")[1]);
+                int qty = Integer.parseInt(qtyField.getText());
+                String selectedShop = shopCombo.getValue();
+                int shopId = Integer.parseInt(selectedShop.split(": ")[1]);
+                Shop shop = mall.getShop(shopId);
+                Product product = shop.getProduct(prodId);
+                if (product != null && product.getQuantity() >= qty) {
+                    cart.addProduct(product, qty);
+                    updateCartList(cartItems, cart);
+                    updateTotals(subtotalLabel, taxLabel, totalLabel, cart);
+                } else {
+                    showAlert("Insufficient stock");
+                }
+            } catch (NumberFormatException ex) {
+                showAlert("Invalid quantity");
+            }
+        });
+
+        removeFromCartBtn.setOnAction(e -> {
+            String selected = cartListView.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                String[] parts = selected.split(", ");
+                String name = parts[0].split(": ")[1];
+                String selectedShop = shopCombo.getValue();
+                int shopId = Integer.parseInt(selectedShop.split(": ")[1]);
+                Shop shop = mall.getShop(shopId);
+                Product product = shop.listAllProducts().stream()
+                    .filter(p -> p.getProductName().equals(name))
+                    .findFirst().orElse(null);
+                if (product != null) {
+                    cart.removeProduct(product);
+                    updateCartList(cartItems, cart);
+                    updateTotals(subtotalLabel, taxLabel, totalLabel, cart);
+                }
+            }
+        });
+
+        redeemBtn.setOnAction(e -> {
+            String selectedCustomer = customerCombo.getValue();
+            if (selectedCustomer == null) {
+                showAlert("Select a customer first");
+                return;
+            }
+            int custId = Integer.parseInt(selectedCustomer.split(",")[0].split(": ")[1]);
+            Customer customer = customers.stream()
+                .filter(c -> c.getCustomerId() == custId)
+                .findFirst().orElse(null);
+            if (customer != null) {
+                try {
+                    int points = Integer.parseInt(pointsField.getText());
+                    if (customer.redeemPoints(points)) {
+                        // Apply discount based on points (e.g., 1 point = 1 currency)
+                        double discount = points;
+                        double subtotal = cart.calculateSubtotal();
+                        subtotal -= discount;
+                        if (subtotal < 0) subtotal = 0;
+                        double tax = subtotal * 0.1;
+                        double total = subtotal + tax;
+                        subtotalLabel.setText("Subtotal: " + String.format("%.2f", subtotal));
+                        taxLabel.setText("Tax (10%): " + String.format("%.2f", tax));
+                        totalLabel.setText("Total: " + String.format("%.2f", total));
+                    } else {
+                        showAlert("Insufficient points");
+                    }
+                } catch (NumberFormatException ex) {
+                    showAlert("Invalid points");
+                }
+            }
+        });
+
+        processPaymentBtn.setOnAction(e -> {
+            String selectedCustomer = customerCombo.getValue();
+            if (selectedCustomer == null) {
+                showAlert("Select a customer first");
+                return;
+            }
+            if (cart.isEmpty()) {
+                showAlert("Cart is empty");
+                return;
+            }
+            int custId = Integer.parseInt(selectedCustomer.split(",")[0].split(": ")[1]);
+            Customer customer = customers.stream()
+                .filter(c -> c.getCustomerId() == custId)
+                .findFirst().orElse(null);
+            if (customer != null) {
+                String paymentType = paymentTypeCombo.getValue();
+                Payment payment = new Payment(java.util.UUID.randomUUID().toString(), paymentType);
+                Transaction transaction = new Transaction(java.util.UUID.randomUUID().toString(), customer, new Date(), cart);
+                if (transaction.processPayment(payment)) {
+                    // Update stock
+                    for (Map.Entry<Product, Integer> entry : cart.getItems().entrySet()) {
+                        entry.getKey().updateStock(-entry.getValue());
+                    }
+                    // Add to history
+                    customer.purchaseHistory.add(transaction);
+                    // Generate invoice
+                    invoiceArea.setText(transaction.generateInvoice());
+                    // Clear cart
+                    cart.clear();
+                    updateCartList(cartItems, cart);
+                    updateTotals(subtotalLabel, taxLabel, totalLabel, cart);
+                    showAlert("Payment successful!");
+                } else {
+                    showAlert("Payment failed");
+                }
+            }
+        });
+
+        vbox.getChildren().addAll(customerSelector, shopSelector, productSearch, productListView, addToCart, new Label("Cart:"), cartListView, removeFromCartBtn, totals, loyalty, payment, new Label("Invoice:"), invoiceArea);
+        return vbox;
+    }
+
+    private void updateCustomerCombo(ComboBox<String> combo) {
+        combo.getItems().clear();
+        for (Customer c : customers) {
+            combo.getItems().add("ID: " + c.getCustomerId() + ", Name: " + c.getCustomerName());
+        }
+    }
+
+    private void updateCartList(ObservableList<String> items, Cart cart) {
+        items.clear();
+        for (Map.Entry<Product, Integer> entry : cart.getItems().entrySet()) {
+            items.add("Name: " + entry.getKey().getProductName() + ", Qty: " + entry.getValue() + ", Price: " + entry.getKey().getPrice());
+        }
+    }
+
+    private void updateTotals(Label subtotalLabel, Label taxLabel, Label totalLabel, Cart cart) {
+        double subtotal = cart.calculateSubtotal();
+        double tax = subtotal * 0.1;
+        double total = subtotal + tax;
+        subtotalLabel.setText("Subtotal: " + String.format("%.2f", subtotal));
+        taxLabel.setText("Tax (10%): " + String.format("%.2f", tax));
+        totalLabel.setText("Total: " + String.format("%.2f", total));
     }
 
     private Pane createMallDetailsPane() {

@@ -11,7 +11,7 @@ public class Payment {
         this.type = type;
         this.status = "INITIATED";
     }
-    //Generally done need to work.
+
     public boolean processPayment() {
         if (amount > 0) {
             status = "SUCCESS";
@@ -29,9 +29,9 @@ public class Payment {
         return false;
     }
 
-    // public String getPaymentDetails() {
-    //     return "Payment #" + paymentId + " | Type: " + type + " | Amount: " + amount + " | Status: " + status;
-    // }
+    public String getPaymentDetails() {
+        return "Payment #" + paymentId + " | Type: " + type + " | Amount: " + amount + " | Status: " + status;
+    }
 
     public void setAmount(double amount) { this.amount = amount; }
     public double getAmount() { return amount; }
