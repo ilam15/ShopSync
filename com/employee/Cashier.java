@@ -4,7 +4,7 @@ import com.customer.Customer;
 import com.transaction.Transaction;
 
 public class Cashier extends Employee {
-    private String shift;   // MORNING / EVENING / NIGHT
+    private String shift;   
     private int counterNo;
 
     public Cashier(int employeeId, String name, double salary, String shift, int counterNo) {
@@ -14,8 +14,8 @@ public class Cashier extends Employee {
     }
 
     public Transaction processBilling(Customer customer, Transaction transaction) {
-        // In a real system, apply promos, taxes, etc.
-        return transaction; // here we just return the same transaction as "processed"
+        // Need to be work 
+        return transaction; 
     }
 
     public String issueReceipt(Transaction tx) {

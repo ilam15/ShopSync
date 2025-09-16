@@ -2,18 +2,17 @@ package com.payment;
 
 public class Payment {
     private String paymentId;
-    private String type;   // Cash / Card / UPI
+    private String type;   
     private double amount;
-    private String status; // INITIATED / SUCCESS / FAILED / REFUNDED
+    private String status; 
 
     public Payment(String paymentId, String type) {
         this.paymentId = paymentId;
         this.type = type;
         this.status = "INITIATED";
     }
-
+    //Generally done need to work.
     public boolean processPayment() {
-        // In real life: integrate with a gateway. Here: accept if amount > 0.
         if (amount > 0) {
             status = "SUCCESS";
             return true;
@@ -30,9 +29,9 @@ public class Payment {
         return false;
     }
 
-    public String getPaymentDetails() {
-        return "Payment #" + paymentId + " | Type: " + type + " | Amount: " + amount + " | Status: " + status;
-    }
+    // public String getPaymentDetails() {
+    //     return "Payment #" + paymentId + " | Type: " + type + " | Amount: " + amount + " | Status: " + status;
+    // }
 
     public void setAmount(double amount) { this.amount = amount; }
     public double getAmount() { return amount; }

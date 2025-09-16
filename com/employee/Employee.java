@@ -16,9 +16,8 @@ public abstract class Employee {
         this.role = role;
         this.salary = salary;
     }
-
+    //Need to connect with Db
     public boolean login(String username, String password) {
-        // Dummy auth for demo
         this.loggedIn = username != null && password != null && !username.isBlank() && !password.isBlank();
         return loggedIn;
     }

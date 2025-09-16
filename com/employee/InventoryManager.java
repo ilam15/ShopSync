@@ -5,8 +5,8 @@ import com.product.Product;
 import com.supplier.Supplier;
 
 public class InventoryManager extends Employee {
-    private String section;        // e.g., "GROCERY", "ELECTRONICS"
-    private String responsibility; // e.g., "Expiry checks, Re-orders"
+    private String section;        
+    private String responsibility; 
 
     public InventoryManager(int employeeId, String name, double salary, String section, String responsibility) {
         super(employeeId, name, "INVENTORY_MANAGER", salary);
