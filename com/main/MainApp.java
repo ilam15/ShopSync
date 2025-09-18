@@ -472,8 +472,7 @@ public class MainApp extends Application {
                         entry.getKey().updateStock(-entry.getValue());
                     }
                     // Add to history
--                    customer.purchaseHistory.add(transaction);
-+                    customer.addToPurchaseHistory(transaction);
+                    customer.addToPurchaseHistory(transaction);
                     // Generate invoice
                     invoiceArea.setText(transaction.generateInvoice());
                     // Clear cart
