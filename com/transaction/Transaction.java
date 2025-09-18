@@ -14,12 +14,17 @@ public class Transaction {
     private Cart cart;
     private double totalAmount;
 
+    // File path for storing transaction data
+    private static final String DATA_DIR = "DB";
+    private static final String TRANSACTION_FILE = DATA_DIR + "/transactions.txt";
+
     public Transaction(String transactionId, Customer customer, Date date, Cart cart) {
         this.transactionId = transactionId;
         this.customer = customer;
         this.date = date;
         this.cart = cart;
         this.totalAmount = cart.calculateSubtotal();
+        saveTransactionData();
     }
 
     public String getTransactionDetails() {
@@ -66,4 +71,19 @@ public class Transaction {
     public Date getDate() { return date; }
     public Cart getCart() { return cart; }
     public Customer getCustomer() { return customer; }
+
+    // Save transaction data to file
+    private void saveTransactionData() {
+        try {
+            java.nio.file.Path dirPath = java.nio.file.Paths.get(DATA_DIR);
+            if (!java.nio.file.Files.exists(dirPath)) {
+                java.nio.file.Files.createDirectories(dirPath);
+            }
+            java.nio.file.Path filePath = java.nio.file.Paths.get(TRANSACTION_FILE);
+            String data = transactionId + "," + customer.getCustomerName() + "," + date + "," + totalAmount + "\n";
+            java.nio.file.Files.write(filePath, data.getBytes(), java.nio.file.StandardOpenOption.CREATE, java.nio.file.StandardOpenOption.APPEND);
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
