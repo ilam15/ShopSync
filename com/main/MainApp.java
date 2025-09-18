@@ -329,12 +329,12 @@ public class MainApp extends Application {
         loyalty.getChildren().addAll(pointsField, redeemBtn);
 
         // Payment
-        HBox payment = new HBox(10);
+        HBox paymentBox = new HBox(10);
         ComboBox<String> paymentTypeCombo = new ComboBox<>();
         paymentTypeCombo.getItems().addAll("Cash", "Card");
         paymentTypeCombo.setValue("Cash");
         Button processPaymentBtn = new Button("Process Payment");
-        payment.getChildren().addAll(new Label("Payment Type:"), paymentTypeCombo, processPaymentBtn);
+        paymentBox.getChildren().addAll(new Label("Payment Type:"), paymentTypeCombo, processPaymentBtn);
 
         // Invoice
         TextArea invoiceArea = new TextArea();
@@ -472,7 +472,8 @@ public class MainApp extends Application {
                         entry.getKey().updateStock(-entry.getValue());
                     }
                     // Add to history
-                    customer.purchaseHistory.add(transaction);
+-                    customer.purchaseHistory.add(transaction);
++                    customer.addToPurchaseHistory(transaction);
                     // Generate invoice
                     invoiceArea.setText(transaction.generateInvoice());
                     // Clear cart
@@ -486,7 +487,7 @@ public class MainApp extends Application {
             }
         });
 
-        vbox.getChildren().addAll(customerSelector, shopSelector, productSearch, productListView, addToCart, new Label("Cart:"), cartListView, removeFromCartBtn, totals, loyalty, payment, new Label("Invoice:"), invoiceArea);
+        vbox.getChildren().addAll(customerSelector, shopSelector, productSearch, productListView, addToCart, new Label("Cart:"), cartListView, removeFromCartBtn, totals, loyalty, paymentBox, new Label("Invoice:"), invoiceArea);
         return vbox;
     }
 

@@ -4,6 +4,7 @@ import java.util.*;
 import com.product.Product;
 import com.transaction.Transaction;
 import com.shop.Shop;
+import com.cart.Cart;
 
 public class Customer {
     private int customerId;
@@ -21,7 +22,9 @@ public class Customer {
     public Transaction buyProduct(Product product, int qty) {
         if (product == null || qty <= 0 || product.getQuantity() < qty) return null;
         double total = product.getPrice() * qty;
-        Transaction tx = new Transaction(UUID.randomUUID().toString(), product, this, new Date(), qty, total);
+        Cart cart = new Cart();
+        cart.addProduct(product, qty);
+        Transaction tx = new Transaction(UUID.randomUUID().toString(), this, new Date(), cart);
         product.updateStock(-qty);
         purchaseHistory.add(tx);
         // earn loyalty points: 1 point per 100 currency
@@ -46,6 +49,10 @@ public class Customer {
 
     public Complaint registerComplaint(String description) {
         return new Complaint(UUID.randomUUID().toString(), this, description, "OPEN");
+    }
+
+    public void addToPurchaseHistory(Transaction tx) {
+        purchaseHistory.add(tx);
     }
 
     public int getCustomerId() { return customerId; }
