@@ -24,6 +24,40 @@ public class Customer {
         saveCustomerData();
     }
 
+    // Private constructor for loading without saving
+    private Customer(int customerId, String customerName, String email, int loyaltyPoints) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.email = email;
+        this.loyaltyPoints = loyaltyPoints;
+    }
+
+    // Static method to load customers from file
+    public static List<Customer> loadCustomers() {
+        List<Customer> customers = new ArrayList<>();
+        java.nio.file.Path filePath = java.nio.file.Paths.get(CUSTOMER_FILE);
+        if (!java.nio.file.Files.exists(filePath)) {
+            return customers;
+        }
+        try {
+            List<String> lines = java.nio.file.Files.readAllLines(filePath);
+            for (String line : lines) {
+                String[] parts = line.split(",");
+                if (parts.length >= 4) {
+                    int id = Integer.parseInt(parts[0].trim());
+                    String name = parts[1].trim();
+                    String email = parts[2].trim();
+                    int points = Integer.parseInt(parts[3].trim());
+                    Customer c = new Customer(id, name, email, points);
+                    customers.add(c);
+                }
+            }
+        } catch (java.io.IOException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return customers;
+    }
+
     public Transaction buyProduct(Product product, int qty) {
         if (product == null || qty <= 0 || product.getQuantity() < qty) return null;
         double total = product.getPrice() * qty;

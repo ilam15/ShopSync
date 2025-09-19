@@ -8,6 +8,7 @@ import com.cart.Cart;
 import com.transaction.Transaction;
 import com.payment.Payment;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -24,6 +25,25 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        // Load previously stored customers on startup
+        List<Customer> loadedCustomers = Customer.loadCustomers();
+        customers.addAll(loadedCustomers);
+
+        // Load previously stored shops on startup
+        List<Shop> loadedShops = Shop.loadShops();
+        for (Shop shop : loadedShops) {
+            mall.addShop(shop);
+        }
+
+        // Load previously stored products on startup and assign to shops
+        List<Product> loadedProducts = Product.loadProducts();
+        for (Product product : loadedProducts) {
+            Shop shop = mall.getShop(product.getShopId());
+            if (shop != null) {
+                shop.addProduct(product);
+            }
+        }
+
         TabPane tabPane = new TabPane();
 
         // Shop Management Tab
@@ -85,7 +105,9 @@ public class MainApp extends Application {
                 int id = Integer.parseInt(shopIdField.getText());
                 String name = shopNameField.getText();
                 String category = categoryField.getText();
-                mall.addShop(new Shop(id, name, category, null));
+                Shop shop = new Shop(id, name, category, null);
+                mall.addShop(shop);
+                shop.saveShopData();
                 updateShopList(shopItems);
                 shopIdField.clear();
                 shopNameField.clear();
@@ -171,7 +193,7 @@ public class MainApp extends Application {
                 String name = prodNameField.getText();
                 double price = Double.parseDouble(priceField.getText());
                 int qty = Integer.parseInt(qtyField.getText());
-                shop.addProduct(new Product(id, name, price, qty, null, null));
+                shop.addProduct(new Product(id, name, price, qty, null, null, shopId));
                 updateProductList(prodItems, shop);
                 prodIdField.clear();
                 prodNameField.clear();
