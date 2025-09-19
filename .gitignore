@@ -1,4 +1,4 @@
-# JavaFX SDK (large binary files)
+# JavaFX SDK
 javafx-sdk-17.0.2/
 
 # Compiled classes
@@ -7,116 +7,7 @@ target/
 
 # IDE files
 .vscode/
-.idea/
-*.iml
-*.iws
-*.ipr
 
-# OS generated files
+# OS files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
-
-# Log files
-*.log
-logs/
-
-# Temporary files
-*.tmp
-*.temp
-
-# Database files (if using real DB in future)
-*.db
-*.sqlite
-
-# Backup files
-*.bak
-*.backup
-
-# Java specific
-*.jar
-*.war
-*.ear
-hs_err_pid*
-
-# Maven (if switching to Maven later)
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
-
-# Gradle (if switching to Gradle later)
-.gradle/
-build/
-gradle-app.setting
-!gradle-wrapper.jar
-!gradle-wrapper.properties
-.gradletasknamecache
-
-# Eclipse
-.project
-.classpath
-.settings/
-
-# IntelliJ IDEA
-out/
-.idea_modules/
-atlassian-ide-plugin.xml
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-fabric.properties
-
-# NetBeans
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-Icon
-._*
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-# Linux
-*~
-.directory
-.Trash-*
-
-# Node.js (if adding frontend later)
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local

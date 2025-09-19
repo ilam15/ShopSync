@@ -8,6 +8,7 @@ public class Shop {
     private String shopName;
     private String category;
     private List<Product> products;
+    private Map<Integer, Product> productMap; // For efficient lookups
     private Object shopDetails; // Placeholder for shop details
 
     // File path for storing shop data
@@ -72,8 +73,10 @@ public class Shop {
     }
 
     public void addProduct(Product product) {
-        products.add(product);
-        product.saveProductData();
+        if (product != null && !products.contains(product)) {
+            products.add(product);
+            product.saveProductData();
+        }
     }
 
     public void removeProduct(int productId) {
