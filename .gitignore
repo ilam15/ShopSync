@@ -1,13 +1,3 @@
 # JavaFX SDK
 javafx-sdk-17.0.2/
 
-# Compiled classes
-target/
-*.class
-
-# IDE files
-.vscode/
-
-# OS files
-.DS_Store
-Thumbs.db

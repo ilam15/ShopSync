@@ -68,8 +68,7 @@ Java Project/
 ├── target/classes/           # Compiled Java classes
 ├── javafx-sdk-17.0.2/        # JavaFX SDK (included)
 ├── run_shop_sync.bat         # Batch file to run the application
-├── README.md                 # This file
-└── TODO.md                   # Project tasks and progress
+└── README.md                 # This file
 ```
 
 ## Tech Stack
