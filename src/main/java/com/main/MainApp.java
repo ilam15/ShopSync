@@ -174,7 +174,7 @@ public class MainApp extends Application {
         shopCombo.setOnAction(e -> {
             String selected = shopCombo.getValue();
             if (selected != null) {
-                int shopId = Integer.parseInt(selected.split(": ")[1]);
+                int shopId = Integer.parseInt(selected.split(": ")[1].split(" - ")[0]);
                 Shop shop = mall.getShop(shopId);
                 updateProductList(prodItems, shop);
             }
@@ -187,7 +187,7 @@ public class MainApp extends Application {
                 return;
             }
             try {
-                int shopId = Integer.parseInt(selectedShop.split(": ")[1]);
+                int shopId = Integer.parseInt(selectedShop.split(": ")[1].split(" - ")[0]);
                 Shop shop = mall.getShop(shopId);
                 int id = Integer.parseInt(prodIdField.getText());
                 String name = prodNameField.getText();
@@ -207,7 +207,7 @@ public class MainApp extends Application {
         deleteProdBtn.setOnAction(e -> {
             String selectedShop = shopCombo.getValue();
             if (selectedShop == null) return;
-            int shopId = Integer.parseInt(selectedShop.split(": ")[1]);
+            int shopId = Integer.parseInt(selectedShop.split(": ")[1].split(" - ")[0]);
             Shop shop = mall.getShop(shopId);
             String selectedProd = prodListView.getSelectionModel().getSelectedItem();
             if (selectedProd != null) {
@@ -370,7 +370,7 @@ public class MainApp extends Application {
         shopCombo.setOnAction(e -> {
             String selected = shopCombo.getValue();
             if (selected != null) {
-                int shopId = Integer.parseInt(selected.split(": ")[1]);
+                int shopId = Integer.parseInt(selected.split(": ")[1].split(" - ")[0]);
                 Shop shop = mall.getShop(shopId);
                 updateProductList(productItems, shop);
             }
@@ -382,7 +382,7 @@ public class MainApp extends Application {
                 showAlert("Select a shop first");
                 return;
             }
-            int shopId = Integer.parseInt(selectedShop.split(": ")[1]);
+            int shopId = Integer.parseInt(selectedShop.split(": ")[1].split(" - ")[0]);
             Shop shop = mall.getShop(shopId);
             String searchTerm = productSearchField.getText().toLowerCase();
             productItems.clear();
@@ -403,7 +403,7 @@ public class MainApp extends Application {
                 int prodId = Integer.parseInt(selectedProduct.split(",")[0].split(": ")[1]);
                 int qty = Integer.parseInt(qtyField.getText());
                 String selectedShop = shopCombo.getValue();
-                int shopId = Integer.parseInt(selectedShop.split(": ")[1]);
+                int shopId = Integer.parseInt(selectedShop.split(": ")[1].split(" - ")[0]);
                 Shop shop = mall.getShop(shopId);
                 Product product = shop.getProduct(prodId);
                 if (product != null && product.getQuantity() >= qty) {
@@ -424,7 +424,7 @@ public class MainApp extends Application {
                 String[] parts = selected.split(", ");
                 String name = parts[0].split(": ")[1];
                 String selectedShop = shopCombo.getValue();
-                int shopId = Integer.parseInt(selectedShop.split(": ")[1]);
+                int shopId = Integer.parseInt(selectedShop.split(": ")[1].split(" - ")[0]);
                 Shop shop = mall.getShop(shopId);
                 Product product = shop.listAllProducts().stream()
                     .filter(p -> p.getProductName().equals(name))
