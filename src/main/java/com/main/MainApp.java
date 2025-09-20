@@ -10,6 +10,8 @@ import com.payment.Payment;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.io.File;
+import javafx.stage.FileChooser;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -363,6 +365,12 @@ public class MainApp extends Application {
         invoiceArea.setEditable(false);
         invoiceArea.setPrefHeight(200);
 
+        // Download Bill Button
+        HBox downloadBox = new HBox(10);
+        Button downloadBillBtn = new Button("Download Bill");
+        downloadBillBtn.setDisable(true); // Initially disabled until payment is processed
+        downloadBox.getChildren().addAll(new Label("Bill Actions:"), downloadBillBtn);
+
         // Cart instance
         Cart cart = new Cart();
 
@@ -497,6 +505,8 @@ public class MainApp extends Application {
                     customer.addToPurchaseHistory(transaction);
                     // Generate invoice
                     invoiceArea.setText(transaction.generateInvoice());
+                    // Enable download button
+                    downloadBillBtn.setDisable(false);
                     // Clear cart
                     cart.clear();
                     updateCartList(cartItems, cart);
@@ -508,7 +518,32 @@ public class MainApp extends Application {
             }
         });
 
-        vbox.getChildren().addAll(customerSelector, shopSelector, productSearch, productListView, addToCart, new Label("Cart:"), cartListView, removeFromCartBtn, totals, loyalty, paymentBox, new Label("Invoice:"), invoiceArea);
+        downloadBillBtn.setOnAction(e -> {
+            if (invoiceArea.getText().isEmpty()) {
+                showAlert("No bill available to download");
+                return;
+            }
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Bill");
+            fileChooser.setInitialFileName("bill.txt");
+            fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+            );
+
+            File file = fileChooser.showSaveDialog(null);
+            if (file != null) {
+                try {
+                    java.nio.file.Files.write(file.toPath(), invoiceArea.getText().getBytes());
+                    showAlert("Bill downloaded successfully as: " + file.getName());
+                } catch (Exception ex) {
+                    showAlert("Error saving bill: " + ex.getMessage());
+                }
+            }
+        });
+
+        vbox.getChildren().addAll(customerSelector, shopSelector, productSearch, productListView, addToCart, new Label("Cart:"), cartListView, removeFromCartBtn, totals, loyalty, paymentBox, new Label("Invoice:"), invoiceArea, downloadBox);
         return vbox;
     }
 
