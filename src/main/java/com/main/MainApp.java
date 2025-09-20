@@ -495,7 +495,9 @@ public class MainApp extends Application {
             if (customer != null) {
                 String paymentType = paymentTypeCombo.getValue();
                 Payment payment = new Payment(java.util.UUID.randomUUID().toString(), paymentType);
-                Transaction transaction = new Transaction(java.util.UUID.randomUUID().toString(), customer, new Date(), cart);
+                // Generate 7-digit transaction ID
+                int transactionId = 1000000 + new java.util.Random().nextInt(9000000);
+                Transaction transaction = new Transaction(String.valueOf(transactionId), customer, new Date(), cart);
                 if (transaction.processPayment(payment)) {
                     // Update stock
                     for (Map.Entry<Product, Integer> entry : cart.getItems().entrySet()) {
