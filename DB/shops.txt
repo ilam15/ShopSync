@@ -1,1 +1,100 @@
-201,Super market ,Shop
+201,CLS Markets,Super Market
+202,Fresh Mart,Grocery
+203,Trendy Wear,Clothing
+204,FootStyle,Footwear
+205,Gadget Hub,Electronics
+206,Book World,Bookstore
+207,Cosmo Care,Cosmetics
+208,FurniZone,Furniture
+209,Toy Planet,Toys
+210,Foodie’s Delight,Restaurant
+211,Cinema Max,Entertainment
+212,Health First,Pharmacy
+213,Style Studio,Fashion
+214,Techie World,Electronics
+215,Daily Needs,Super Market
+216,Sports Zone,Sports
+217,Gift Gallery,Gift Shop
+218,Mobile Point,Electronics
+219,Home Bazaar,Home Decor
+220,Quick Bites,Food Court
+221,Elite Jewels,Jewelry
+222,Baby Joy,Baby Store
+223,Trendy Bags,Accessories
+224,Pet Care,Pet Store
+225,Organic Mart,Organic Store
+226,Men’s Trendz,Clothing
+227,Women’s Choice,Clothing
+228,Kids World,Clothing
+229,Shoe Stop,Footwear
+230,Game Zone,Entertainment
+231,Beauty Hub,Cosmetics
+232,Furniture Palace,Furniture
+233,Taste of India,Restaurant
+234,Tech World,Electronics
+235,Handy Store,Super Market
+236,Art & Craft,Gift Shop
+237,Watch House,Watches
+238,Sporty Life,Sports
+239,Wellness Plus,Pharmacy
+240,Urban Living,Home Decor
+241,Silver Shine,Jewelry
+242,Snack Time,Food Court
+243,Fun Planet,Toys
+244,Book Nest,Bookstore
+245,Tech Solutions,Electronics
+246,Decor Den,Home Decor
+247,The Bake House,Bakery
+248,Sport Hub,Sports
+249,Cute Kids,Baby Store
+250,Glow & Shine,Cosmetics
+251,Daily Fresh,Grocery
+252,Trendy Shoes,Footwear
+253,Play Zone,Entertainment
+254,Golden Touch,Jewelry
+255,Kitchen King,Home Appliances
+256,Quick Mart,Super Market
+257,Coffee Corner,Café
+258,Healthy Bites,Restaurant
+259,Vision Care,Optical
+260,Gift n Smile,Gift Shop
+261,Mobile Galaxy,Electronics
+262,Style Hub,Fashion
+263,Happy Pets,Pet Store
+264,Book Haven,Bookstore
+265,Urban Style,Clothing
+266,Shiny Stones,Jewelry
+267,Shoe Park,Footwear
+268,Toy Box,Toys
+269,Food Mania,Food Court
+270,Elite Decor,Home Decor
+271,Beauty Secrets,Cosmetics
+272,Sports Arena,Sports
+273,Furniture World,Furniture
+274,Health Hub,Pharmacy
+275,Digital Zone,Electronics
+276,Trendy Corner,Accessories
+277,Fresh Basket,Grocery
+278,Daily Needs Plus,Super Market
+279,Culture Reads,Bookstore
+280,The Cake Shop,Bakery
+281,Men’s Vogue,Clothing
+282,Women’s Trend,Clothing
+283,Kids Planet,Clothing
+284,Shoe Express,Footwear
+285,Game Max,Entertainment
+286,Wellness Care,Pharmacy
+287,Elite Fashion,Fashion
+288,Smart Choice,Super Market
+289,Cute Toys,Toys
+290,Glow Beauty,Cosmetics
+291,The Spice House,Restaurant
+292,Digital Store,Electronics
+293,Gift Paradise,Gift Shop
+294,Home Dreams,Home Decor
+295,Sport Star,Sports
+296,Silver Palace,Jewelry
+297,Coffee & Chill,Café
+298,Daily Fresh Plus,Grocery
+299,Urban Bazaar,Accessories
+300,Family Mart,Super Market
